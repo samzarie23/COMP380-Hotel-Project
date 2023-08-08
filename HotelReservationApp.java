@@ -1,13 +1,54 @@
 import javax.swing.*;
 import javax.swing.border.Border;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+//CODE TO GET TO SQL DATABASE
+/*
+String connectionUrl = "jdbc:sqlserver://hotelsjas.database.windows.net:1433;"
+            + "database=HummingBirdHotel;"
+            + "user=samzarie;"
+            + "password=hotelproj123!;"
+            + "encrypt=true;"
+            + "trustServerCertificate=true;"
+            + "logLevel=4;"
+            + "loginTimeout=30;";
+            
+            try (Connection connection = DriverManager.getConnection(connectionUrl)) 
+        {
+            System.out.println("Connected to the database");
+    
+            // Create a query to insert a new person into the users table
+            String insertQuery = "INSERT INTO users (user_id, username, email, accesslevel) VALUES (?, ?, ?, ?)";
+    
+            try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+                // Set the values for the parameters
+                preparedStatement.setString(1, "101");
+                preparedStatement.setString(2, "SamZarieSeyd");
+                preparedStatement.setString(3, "Samzarie@gmail.com");
+                preparedStatement.setString(4, "super admin");   
+                // Execute the insert query
+                int rowsAffected = preparedStatement.executeUpdate();
+    
+                if (rowsAffected > 0) {
+                    System.out.println("New person inserted successfully.");
+                } else {
+                    System.out.println("Failed to insert new person.");
+                }
+            }
+    
+            // Your booking logic here
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        */
+
 
 public class HotelReservationApp {
     private JFrame frame;
@@ -46,6 +87,8 @@ public class HotelReservationApp {
         leftPanel.setPreferredSize(new Dimension(650, 0)); // Set preferred width for left panel
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
+
+    
 
         // Welcome Message (Rendered using HTML)
         JEditorPane welcomeLabel = new JEditorPane("text/html", "<html><div style='text-align: center; font-size: 36pt; color: white;'>Welcome to<br>HummingBird Hotel and Resort</div></html>");
@@ -141,9 +184,18 @@ public class HotelReservationApp {
                 String checkIn = checkInField.getText();
                 String checkOut = checkOutField.getText();
                 int howMany = Integer.parseInt(howManyField.getText());
-                bookNow(checkIn, checkOut, howMany);
+                boolean isValidBooking = bookNow(checkIn, checkOut, howMany);
+        
+                if (isValidBooking == true) {
+                    // Close the current GUI window
+                    frame.dispose();
+                    
+                    // Create and show a new GUI window for entering guest information
+                    createAndShowBookingFormGUI();
+                }
             }
         });
+        
 
         viewReservationButton.addActionListener(new ActionListener() {
             @Override
@@ -166,53 +218,57 @@ public class HotelReservationApp {
         frame.setVisible(true);
     }
 
-   private void bookNow(String checkIn, String checkOut, int howMany) {
-        // Implement this method to handle the booking logic
-        // You can use the provided JDBC code from previous responses to interact with the database.
+    private boolean bookNow(String checkIn, String checkOut, int howMany) {
+        // Check if the date format is valid (month/day/year)
+        if (!isValidDateFormat(checkIn) || !isValidDateFormat(checkOut)) {
+            showErrorMessage("Invalid date format. Please use the format: month/day/year");
+            return false; // Exit the method
+        }
+    
+        // Check if the number of travelers is within the allowed limit (max 4 people)
+        if (howMany > 4) {
+            showErrorMessage("Maximum of 4 travelers allowed.");
+            return false; // Exit the method
+        }
 
-        
-    } 
+        return true;
+    }
+    
+    // Helper method to check if a date is in valid format (month/day/year)
+    private boolean isValidDateFormat(String date) {
+        String dateFormatRegex = "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\\d{4}$";
+        return date.matches(dateFormatRegex);
+    }
+
+    
+    private void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
     // Method to handle viewing an existing reservation
     private void viewReservation(String confirmationNumber) {
         // Implement this method to handle viewing the reservation based on the confirmation number
         // You can use the provided JDBC code from previous responses to interact with the database.
         // Retrieve the reservation details from the database and display them to the user.
+
     }
+
+    private void createAndShowBookingFormGUI() {
+    JFrame bookingFormFrame = new JFrame("Guest Information");
+    bookingFormFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    bookingFormFrame.setSize(800, 500);
+    bookingFormFrame.setLayout(new BorderLayout());
+
+    // Create panels, labels, text fields, buttons, and add them to the bookingFormFrame
+    // ... (Code to create the new GUI for entering guest information)
+
+    // Pack the frame to set the preferred size, and then make it visible
+    bookingFormFrame.pack();
+    bookingFormFrame.setVisible(true);
+}
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new HotelReservationApp());
     }
 }
-public class SQLDatabaseConnection {
 
-    // Connect to your database.
-    // Replace server name, username, and password with your credentials
-    public static void main(String[] args) {
-        String connectionUrl =
-                "jdbc:sqlserver://yourserver.database.windows.net:1433;"
-                + "database=AdventureWorks;"
-                + "user=yourusername@yourserver;"
-                + "password=yourpassword;"
-                + "encrypt=true;"
-                + "trustServerCertificate=false;"
-                + "loginTimeout=30;";
-
-        ResultSet resultSet = null;
-
-        try (Connection connection = DriverManager.getConnection(connectionUrl);
-                Statement statement = connection.createStatement();) {
-
-            // Create and execute a SELECT SQL statement.
-            String selectSql = "SELECT TOP 10 Title, FirstName, LastName from SalesLT.Customer";
-            resultSet = statement.executeQuery(selectSql);
-
-            // Print results from select statement
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString(2) + " " + resultSet.getString(3));
-            }
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-}
