@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +11,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -58,8 +60,8 @@ String connectionUrl = "jdbc:sqlserver://hotelsjas.database.windows.net:1433;"
 public class HotelReservationApp {
     private JFrame frame;
     private JFrame bookingFormFrame;
-    private JTextField checkInField;
-    private JTextField checkOutField;
+    private JFormattedTextField checkInField; //Changed these two to formatted text fields to allow more ease of use
+    private JFormattedTextField checkOutField;
     private JTextField howManyField;
     private JTextField confirmationField; // New field to enter confirmation number
     private JPanel summaryPanel;
@@ -118,7 +120,16 @@ public class HotelReservationApp {
         JLabel checkInLabel = new JLabel("Check In Date");
         checkInLabel.setForeground(Color.BLACK);
         checkInLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        checkInField = new JTextField(15); // Increased width for the text field
+        MaskFormatter dateMask = null;
+            try {
+                dateMask = new MaskFormatter("##/##/####");
+                dateMask.setPlaceholderCharacter('_');
+                } 
+                catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+        checkInField = new JFormattedTextField(dateMask); // Increased width for the text field
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -131,7 +142,16 @@ public class HotelReservationApp {
         JLabel checkOutLabel = new JLabel("Check Out Date");
         checkOutLabel.setForeground(Color.BLACK);
         checkOutLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        checkOutField = new JTextField(15); // Increased width for the text field
+        MaskFormatter dateMaskOut = null;
+            try {
+                dateMaskOut = new MaskFormatter("##/##/####");
+                dateMaskOut.setPlaceholderCharacter('_');
+            } 
+                catch (ParseException e) {
+                e.printStackTrace();
+                }
+        
+        checkOutField = new JFormattedTextField(dateMaskOut); // Increased width for the text field
         gbc.gridy = 2;
         rightPanel.add(checkOutLabel, gbc);
         gbc.gridy = 3;
