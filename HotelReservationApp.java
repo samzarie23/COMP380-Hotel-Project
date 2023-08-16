@@ -790,7 +790,8 @@ bookNowButton.addActionListener(new ActionListener() {
 
                 }
             
-              }  // Your booking logic here
+              }  
+              // Your booking logic here
             
             } 
             catch (SQLException ex) 
