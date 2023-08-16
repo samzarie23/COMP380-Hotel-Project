@@ -76,7 +76,7 @@ public class HotelReservationApp {
         frame.setLayout(new BorderLayout());
 
         // Set a fixed size for the frame and prevent resizing
-        frame.setPreferredSize(new Dimension(1365, 750));
+        frame.setPreferredSize(new Dimension(1500, 750));
         frame.setResizable(false);
 
         // Outer Panel with Background Image
@@ -118,12 +118,16 @@ public class HotelReservationApp {
         JLabel checkInLabel = new JLabel("Check In Date");
         checkInLabel.setForeground(Color.BLACK);
         checkInLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        JLabel checkInLabel2 = new JLabel("(MM/DD/YYYY)");
+        checkInLabel.setForeground(Color.BLACK);
+        checkInLabel.setFont(new Font("Arial", Font.BOLD, 24));
         checkInField = new JTextField(15); // Increased width for the text field
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         rightPanel.add(checkInLabel, gbc);
+        rightPanel.add(checkInLabel2, gbc);
         gbc.gridy = 1;
         rightPanel.add(checkInField, gbc);
 
