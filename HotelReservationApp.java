@@ -481,22 +481,24 @@ bookingFormFrame.add(titlePanel, BorderLayout.NORTH);
 
         summaryPanel.add(roomNumberField);
         viewLabel.setForeground(textColor);
-        sqftLabel.setForeground(textColor);
-        featuresLabel.setForeground(textColor);
-        JButton bookNowButton = new JButton("Book Now");
-        bookNowButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Implement the booking logic for the selected room
-                String roomInfo = "Room " + roomNumber + "\nView: " + viewLabel.getText() +
-                        "\n" + sqftLabel.getText() + "\n" +
-                        featuresLabel.getText() + "\n" +
-                        priceLabel.getText() + "\n" +
-                        bedsAndBathroomsLabel.getText();
-                boolean isRoomBooked = bookRoom(roomInfo); // Implement this method
-                if (isRoomBooked) 
-                {
-                    JOptionPane.showMessageDialog(null, "Room booked successfully!");
+
+sqftLabel.setForeground(textColor);
+featuresLabel.setForeground(textColor);
+ JButton bookNowButton = new JButton("Book Now");
+bookNowButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // Implement the booking logic for the selected room
+        String roomInfo = "Room " + roomNumber + "\nView: " + viewLabel.getText() +
+                "\n" + sqftLabel.getText() + "\n" +
+                featuresLabel.getText() + "\n" +
+                priceLabel.getText() + "\n" +
+                bedsAndBathroomsLabel.getText();
+        boolean isRoomBooked = bookRoom(roomInfo); // Implement this method
+        if (isRoomBooked) 
+        {
+            
+
 
                     // Get the selected check-in and check-out dates, number of travelers, and room number
                     String checkInDate = checkin;
@@ -760,31 +762,37 @@ bookingFormFrame.add(titlePanel, BorderLayout.NORTH);
             {
                 System.out.println("Connected to the database");
             
-                // Create a query to insert a new person into the users table
-                String insertQuery = "INSERT INTO SZ_Reservations (fullname, email, phonenumber, cardholdername, cardnumber, expdate, cvv, reservationumber, checkindate, checkoutdate,numtravelers, roomnumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            
-                try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
-                    // Set the values for the parameters
-                    preparedStatement.setString(1, fullName);
-                    preparedStatement.setString(2, email);
-                    preparedStatement.setString(3, phoneNumber);
-                    preparedStatement.setString(4, cardholderName);   
-                    preparedStatement.setString(5, cardNumber);
-                    preparedStatement.setString(6, expirationDate);
-                    preparedStatement.setString(7, cvv);
-                    preparedStatement.setString(8, reservationNumber);   
-                    preparedStatement.setString(9, checkInDate);
-                    preparedStatement.setString(10, checkOutDate);
-                    preparedStatement.setInt(11, numTravelers);
-                    preparedStatement.setInt(12, roomNumber); 
-                    // Execute the insert query
-                    int rowsAffected = preparedStatement.executeUpdate();
-                
-                    if (rowsAffected > 0) {
-                        System.out.println("New reservation inserted successfully.");
-                    } else {
-                        System.out.println("Failed to insert new reservation.");
-                    }
+
+            try (Connection connection = DriverManager.getConnection(connectionUrl)) 
+        {
+            System.out.println("Connected to the database");
+    
+            // Create a query to insert a new person into the users table
+            String insertQuery = "INSERT INTO SZ_Reservations (fullname, email, phonenumber, cardholdername, cardnumber, expdate, cvv, reservationumber, checkindate, checkoutdate,numtravelers, roomnumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+            try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+                // Set the values for the parameters
+                preparedStatement.setString(1, fullName);
+                preparedStatement.setString(2, email);
+                preparedStatement.setString(3, phoneNumber);
+                preparedStatement.setString(4, cardholderName);   
+                 preparedStatement.setString(5, cardNumber);
+                preparedStatement.setString(6, expirationDate);
+                preparedStatement.setString(7, cvv);
+                preparedStatement.setString(8, reservationNumber);   
+                preparedStatement.setString(9, checkInDate);
+                preparedStatement.setString(10, checkOutDate);
+                preparedStatement.setInt(11, numTravelers);
+                 preparedStatement.setInt(12, roomNumber); 
+                // Execute the insert query
+                int rowsAffected = preparedStatement.executeUpdate();
+    
+                if (rowsAffected > 0) {
+                    System.out.println("New reservation inserted successfully.");
+                    JOptionPane.showMessageDialog(null, "Room booked successfully!");
+                } else {
+                    System.out.println("Failed to insert new reservation.");
+
                 }
             
                 // Your booking logic here
