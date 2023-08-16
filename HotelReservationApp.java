@@ -476,7 +476,7 @@ bookNowButton.addActionListener(new ActionListener() {
         boolean isRoomBooked = bookRoom(roomInfo); // Implement this method
         if (isRoomBooked) 
         {
-            JOptionPane.showMessageDialog(null, "Room booked successfully!");
+            
 
             // Get the selected check-in and check-out dates, number of travelers, and room number
             String checkInDate = checkin;
@@ -744,6 +744,7 @@ completeBookingButton.addActionListener(new ActionListener() {
     
                 if (rowsAffected > 0) {
                     System.out.println("New reservation inserted successfully.");
+                    JOptionPane.showMessageDialog(null, "Room booked successfully!");
                 } else {
                     System.out.println("Failed to insert new reservation.");
                 }
