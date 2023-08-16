@@ -60,7 +60,7 @@ String connectionUrl = "jdbc:sqlserver://hotelsjas.database.windows.net:1433;"
 public class HotelReservationApp {
     private JFrame frame;
     private JFrame bookingFormFrame;
-    private JFormattedTextField checkInField; //Changed these two to formatted text fields to allow more ease of use
+    private JFormattedTextField checkInField;
     private JFormattedTextField checkOutField;
     private JTextField howManyField;
     private JTextField confirmationField; // New field to enter confirmation number
@@ -78,7 +78,7 @@ public class HotelReservationApp {
         frame.setLayout(new BorderLayout());
 
         // Set a fixed size for the frame and prevent resizing
-        frame.setPreferredSize(new Dimension(1365, 750));
+        frame.setPreferredSize(new Dimension(1500, 750));
         frame.setResizable(false);
 
         // Outer Panel with Background Image
@@ -86,7 +86,7 @@ public class HotelReservationApp {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon backgroundImage = new ImageIcon("C:/Users/samza/Dropbox/SZ_Work/SZ_CSUN/comp380/HawaiiPhoto.jpg");
+                ImageIcon backgroundImage = new ImageIcon("C:/Users/jayms/OneDrive/COMP 380 Work/COMP380-Hotel-Project-main/images/HawaiiPhoto.jpg");
                 g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
@@ -438,7 +438,7 @@ bookingFormFrame.add(titlePanel, BorderLayout.NORTH);
         timer.start();
     
         JPanel detailsPanel = new JPanel(new GridBagLayout());
-detailsPanel.setBackground(new Color(0, 0, 0, 150));
+        detailsPanel.setBackground(new Color(0, 0, 0, 150));
     
         // Randomize room details for demonstration
         String view = getRandomView();
@@ -459,7 +459,7 @@ detailsPanel.setBackground(new Color(0, 0, 0, 150));
         // Summary Panel
         JPanel summaryPanel = new JPanel();
         summaryPanel.setLayout(new BoxLayout(summaryPanel, BoxLayout.Y_AXIS));
-    summaryPanel.setBackground(Color.BLACK);
+        summaryPanel.setBackground(Color.BLACK);
         // Randomize summary details for demonstration
         int price = (int) (Math.random() * 300) + 100;
         String bedsLabel = getBedsLabel(numPeople);
@@ -473,108 +473,108 @@ detailsPanel.setBackground(new Color(0, 0, 0, 150));
         
        
         JTextField roomNumberField = new JTextField();
-roomNumberField.setEditable(false);
-roomNumberField.setBackground(Color.BLACK);
-roomNumberField.setForeground(textColor);
-roomNumberField.setFont(new Font("Arial", Font.BOLD, 18));
-roomNumberField.setText("Room " + roomNumberOfficial);
+        roomNumberField.setEditable(false);
+        roomNumberField.setBackground(Color.BLACK);
+        roomNumberField.setForeground(textColor);
+        roomNumberField.setFont(new Font("Arial", Font.BOLD, 18));
+        roomNumberField.setText("Room " + roomNumberOfficial);
 
- summaryPanel.add(roomNumberField);
+        summaryPanel.add(roomNumberField);
         viewLabel.setForeground(textColor);
-sqftLabel.setForeground(textColor);
-featuresLabel.setForeground(textColor);
- JButton bookNowButton = new JButton("Book Now");
-bookNowButton.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        // Implement the booking logic for the selected room
-        String roomInfo = "Room " + roomNumber + "\nView: " + viewLabel.getText() +
-                "\n" + sqftLabel.getText() + "\n" +
-                featuresLabel.getText() + "\n" +
-                priceLabel.getText() + "\n" +
-                bedsAndBathroomsLabel.getText();
-        boolean isRoomBooked = bookRoom(roomInfo); // Implement this method
-        if (isRoomBooked) 
-        {
-            JOptionPane.showMessageDialog(null, "Room booked successfully!");
+        sqftLabel.setForeground(textColor);
+        featuresLabel.setForeground(textColor);
+        JButton bookNowButton = new JButton("Book Now");
+        bookNowButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Implement the booking logic for the selected room
+                String roomInfo = "Room " + roomNumber + "\nView: " + viewLabel.getText() +
+                        "\n" + sqftLabel.getText() + "\n" +
+                        featuresLabel.getText() + "\n" +
+                        priceLabel.getText() + "\n" +
+                        bedsAndBathroomsLabel.getText();
+                boolean isRoomBooked = bookRoom(roomInfo); // Implement this method
+                if (isRoomBooked) 
+                {
+                    JOptionPane.showMessageDialog(null, "Room booked successfully!");
 
-            // Get the selected check-in and check-out dates, number of travelers, and room number
-            String checkInDate = checkin;
-            String checkOutDate = checkout;
-            int numTravelers =  numPeople; 
-            int selectedRoomNumber = roomNumberOfficial;
+                    // Get the selected check-in and check-out dates, number of travelers, and room number
+                    String checkInDate = checkin;
+                    String checkOutDate = checkout;
+                    int numTravelers =  numPeople; 
+                    int selectedRoomNumber = roomNumberOfficial;
 
-            // Call the method to create and show the contact/payment information GUI
-            createAndShowContactPaymentGUI(checkInDate, checkOutDate, numTravelers, selectedRoomNumber,priceLabel.getText());
-            
-            // Close the current frame
-            bookingFormFrame.dispose();
-        } 
-        else 
-        {
-            JOptionPane.showMessageDialog(null, "Failed to book the room. Please try again.");
-        }
-    }
-});
- summaryPanel.add(bookNowButton);
+                    // Call the method to create and show the contact/payment information GUI
+                    createAndShowContactPaymentGUI(checkInDate, checkOutDate, numTravelers, selectedRoomNumber,priceLabel.getText());
 
-// Price and Beds/Bathrooms labels
-priceLabel.setForeground(textColor);
-bedsAndBathroomsLabel.setForeground(textColor);
-    
+                    // Close the current frame
+                    bookingFormFrame.dispose();
+                } 
+                else 
+                {
+                    JOptionPane.showMessageDialog(null, "Failed to book the room. Please try again.");
+                }
+            }
+        });
+        summaryPanel.add(bookNowButton);
+
+        // Price and Beds/Bathrooms labels
+        priceLabel.setForeground(textColor);
+        bedsAndBathroomsLabel.setForeground(textColor);
+
         roomCard.add(summaryPanel, BorderLayout.EAST);
 
-           // Add an EmptyBorder to the left side to adjust the position of the text
-    int leftPadding = 20; // Adjust the padding as needed
-    int topPadding = 10; // Adjust the padding as needed
-    int rightPadding = 20; // Adjust the padding as needed
-    int bottomPadding = 10; // Adjust the padding as needed
-    summaryPanel.setBorder(BorderFactory.createEmptyBorder(topPadding, leftPadding, bottomPadding, rightPadding));
-    
+               // Add an EmptyBorder to the left side to adjust the position of the text
+        int leftPadding = 20; // Adjust the padding as needed
+        int topPadding = 10; // Adjust the padding as needed
+        int rightPadding = 20; // Adjust the padding as needed
+        int bottomPadding = 10; // Adjust the padding as needed
+        summaryPanel.setBorder(BorderFactory.createEmptyBorder(topPadding, leftPadding, bottomPadding, rightPadding));
+
     
         return roomCard;
     }
     
 
     private void addComponent(JPanel panel, JComponent component, int gridx, int gridy,
-                          int gridwidth, int gridheight, int anchor) {
-    GridBagConstraints gbc = new GridBagConstraints();
-    gbc.gridx = gridx;
-    gbc.gridy = gridy;
-    gbc.gridwidth = gridwidth;
-    gbc.gridheight = gridheight;
-    gbc.anchor = anchor;
-    gbc.insets = new Insets(5, 5, 5, 5);
-    panel.add(component, gbc);
-}
+                            int gridwidth, int gridheight, int anchor) {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = gridx;
+        gbc.gridy = gridy;
+        gbc.gridwidth = gridwidth;
+        gbc.gridheight = gridheight;
+        gbc.anchor = anchor;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        panel.add(component, gbc);
+    }   
     
    private String getRandomView() {
-    String[] views = {"Ocean View", "Mountain View", "City View", "Garden View"};
-    int randomIndex = (int) (Math.random() * views.length);
-    return views[randomIndex];
-}
-
-// Helper method to generate random features
-private String getRandomFeatures() {
-    String[] features = {"Balcony", "Mini Bar", "Jacuzzi", "Kitchenette"};
-    int numFeatures = (int) (Math.random() * (features.length - 1)) + 1;
-    StringBuilder selectedFeatures = new StringBuilder();
-    
-    for (int i = 0; i < numFeatures; i++) {
-        int randomIndex = (int) (Math.random() * features.length);
-        if (i > 0) {
-            selectedFeatures.append(", ");
-        }
-        selectedFeatures.append(features[randomIndex]);
+        String[] views = {"Ocean View", "Mountain View", "City View", "Garden View"};
+        int randomIndex = (int) (Math.random() * views.length);
+        return views[randomIndex];
     }
-    
-    return selectedFeatures.toString();
-}
 
-private void showOriginalGUI() {
-    bookingFormFrame.dispose(); // Close the booking form GUI
-    frame.setVisible(true);     // Show the original GUI
-}
+    // Helper method to generate random features
+    private String getRandomFeatures() {
+        String[] features = {"Balcony", "Mini Bar", "Jacuzzi", "Kitchenette"};
+        int numFeatures = (int) (Math.random() * (features.length - 1)) + 1;
+        StringBuilder selectedFeatures = new StringBuilder();
+
+        for (int i = 0; i < numFeatures; i++) {
+            int randomIndex = (int) (Math.random() * features.length);
+            if (i > 0) {
+                selectedFeatures.append(", ");
+            }
+            selectedFeatures.append(features[randomIndex]);
+        }
+
+        return selectedFeatures.toString();
+    }
+
+    private void showOriginalGUI() {
+        bookingFormFrame.dispose(); // Close the booking form GUI
+        frame.setVisible(true);     // Show the original GUI
+    }
 
 
     
@@ -624,7 +624,8 @@ private void showOriginalGUI() {
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new GridBagLayout());
         leftPanel.setBackground(Color.WHITE);
-    
+        leftPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE, 2)));
+        
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -665,8 +666,20 @@ private void showOriginalGUI() {
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
         rightPanel.setBackground(Color.WHITE);
+        rightPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GREEN, 2)));
 
-         // Add check-in, check-out, travelers, and room number information
+        JLabel reservationDetailsTitle = new JLabel("Reservation Details");
+        reservationDetailsTitle.setFont(new Font("Arial", Font.BOLD, 24));
+        reservationDetailsTitle.setForeground(Color.BLACK);
+
+        gbc.gridx = 0;
+        gbc.gridy = 7; // Set this to the row just before the first field
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        rightPanel.add(reservationDetailsTitle, gbc);
+    
+        // Add check-in, check-out, travelers, and room number information
         addLabelAndField(rightPanel, gbc, "Check-In Date:", checkInDate, 8);
         addLabelAndField(rightPanel, gbc, "Check-Out Date:", checkOutDate, 9);
         addLabelAndField(rightPanel, gbc, "Number of Travelers:", String.valueOf(numTravelers), 10);
@@ -703,88 +716,93 @@ private void showOriginalGUI() {
         JLabel breakdownLabel = new JLabel("Total Breakdown");
         breakdownLabel.setForeground(Color.BLACK);
         breakdownLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        rightPanel.add(breakdownLabel);
-    
-        rightPanel.add(Box.createVerticalStrut(10));
+
+        gbc.gridx = 0;
+        gbc.gridy = 0; // Set this to the top row
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        rightPanel.add(breakdownLabel, gbc);
     
         addTotalBreakdownItem(rightPanel, "Subtotal: $", String.format("%.2f", subtotal));
         addTotalBreakdownItem(rightPanel, "Tax (10%): $", String.format("%.2f", taxAmount));
         addTotalBreakdownItem(rightPanel, "Total Cost: $", String.format("%.2f", totalCost));
     
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-JButton completeBookingButton = new JButton("Complete Booking");
-buttonPanel.add(completeBookingButton);
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.RED, 2)));
+        JButton completeBookingButton = new JButton("Complete Booking");
+        buttonPanel.add(completeBookingButton);
 
-completeBookingButton.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        // Retrieve data from text fields
-        String fullName = fullNameField.getText();
-        String email = emailFieldField.getText();
-        String phoneNumber = phoneNumberField.getText();
-        String cardholderName = cardHolderField.getText();
-        String cardNumber = cardNumberField.getText();
-        String expirationDate = expDateField.getText();
-        String cvv = cvvField.getText();
-        String reservationNumber =  Integer.toString(ThreadLocalRandom.current().nextInt(100000, 1000000000 + 1));
-        // Insert reservation into the database
+    completeBookingButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Retrieve data from text fields
+            String fullName = fullNameField.getText();
+            String email = emailFieldField.getText();
+            String phoneNumber = phoneNumberField.getText();
+            String cardholderName = cardHolderField.getText();
+            String cardNumber = cardNumberField.getText();
+            String expirationDate = expDateField.getText();
+            String cvv = cvvField.getText();
+            String reservationNumber =  Integer.toString(ThreadLocalRandom.current().nextInt(100000, 1000000000 + 1));
+            // Insert reservation into the database
 
-        String connectionUrl = "jdbc:sqlserver://hotelsjas.database.windows.net:1433;"
-            + "database=HummingBirdHotel;"
-            + "user=samzarie;"
-            + "password=hotelproj123!;"
-            + "encrypt=true;"
-            + "trustServerCertificate=true;"
-            + "logLevel=4;"
-            + "loginTimeout=30;";
+            String connectionUrl = "jdbc:sqlserver://hotelsjas.database.windows.net:1433;"
+                + "database=HummingBirdHotel;"
+                + "user=samzarie;"
+                + "password=hotelproj123!;"
+                + "encrypt=true;"
+                + "trustServerCertificate=true;"
+                + "logLevel=4;"
+                + "loginTimeout=30;";
+
+                try (Connection connection = DriverManager.getConnection(connectionUrl)) 
+            {
+                System.out.println("Connected to the database");
             
-            try (Connection connection = DriverManager.getConnection(connectionUrl)) 
-        {
-            System.out.println("Connected to the database");
-    
-            // Create a query to insert a new person into the users table
-            String insertQuery = "INSERT INTO SZ_Reservations (fullname, email, phonenumber, cardholdername, cardnumber, expdate, cvv, reservationumber, checkindate, checkoutdate,numtravelers, roomnumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    
-            try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
-                // Set the values for the parameters
-                preparedStatement.setString(1, fullName);
-                preparedStatement.setString(2, email);
-                preparedStatement.setString(3, phoneNumber);
-                preparedStatement.setString(4, cardholderName);   
-                 preparedStatement.setString(5, cardNumber);
-                preparedStatement.setString(6, expirationDate);
-                preparedStatement.setString(7, cvv);
-                preparedStatement.setString(8, reservationNumber);   
-                preparedStatement.setString(9, checkInDate);
-                preparedStatement.setString(10, checkOutDate);
-                preparedStatement.setInt(11, numTravelers);
-                 preparedStatement.setInt(12, roomNumber); 
-                // Execute the insert query
-                int rowsAffected = preparedStatement.executeUpdate();
-    
-                if (rowsAffected > 0) {
-                    System.out.println("New reservation inserted successfully.");
-                } else {
-                    System.out.println("Failed to insert new reservation.");
+                // Create a query to insert a new person into the users table
+                String insertQuery = "INSERT INTO SZ_Reservations (fullname, email, phonenumber, cardholdername, cardnumber, expdate, cvv, reservationumber, checkindate, checkoutdate,numtravelers, roomnumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            
+                try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+                    // Set the values for the parameters
+                    preparedStatement.setString(1, fullName);
+                    preparedStatement.setString(2, email);
+                    preparedStatement.setString(3, phoneNumber);
+                    preparedStatement.setString(4, cardholderName);   
+                    preparedStatement.setString(5, cardNumber);
+                    preparedStatement.setString(6, expirationDate);
+                    preparedStatement.setString(7, cvv);
+                    preparedStatement.setString(8, reservationNumber);   
+                    preparedStatement.setString(9, checkInDate);
+                    preparedStatement.setString(10, checkOutDate);
+                    preparedStatement.setInt(11, numTravelers);
+                    preparedStatement.setInt(12, roomNumber); 
+                    // Execute the insert query
+                    int rowsAffected = preparedStatement.executeUpdate();
+                
+                    if (rowsAffected > 0) {
+                        System.out.println("New reservation inserted successfully.");
+                    } else {
+                        System.out.println("Failed to insert new reservation.");
+                    }
                 }
+            
+                // Your booking logic here
+            
+            } 
+            catch (SQLException ex) 
+            {
+                ex.printStackTrace();
             }
-    
-            // Your booking logic here
-    
-        } 
-        catch (SQLException ex) 
-        {
-            ex.printStackTrace();
+
         }
-        
-    }
-});
+    });
     
         // Add the left and right panels to the contactPaymentFrame
         contactPaymentFrame.add(leftPanel, BorderLayout.WEST);
         contactPaymentFrame.add(rightPanel, BorderLayout.CENTER);
         contactPaymentFrame.add(buttonPanel, BorderLayout.SOUTH);
-    
+        
         // Pack the frame to set the preferred size, and then make it visible
         contactPaymentFrame.pack();
         contactPaymentFrame.setVisible(true);
@@ -799,17 +817,17 @@ completeBookingButton.addActionListener(new ActionListener() {
         JTextField field = new JTextField(fieldValue, 20);
         field.setEditable(false);
         
-        JPanel labelFieldPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel labelFieldPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         labelFieldPanel.add(label);
         labelFieldPanel.add(field);
-    
+        
         gbc.gridy = gridY;
         panel.add(labelFieldPanel, gbc);
     }
     
     
     private void addTotalBreakdownItem(JPanel panel, String labelText, String valueText) {
-        JPanel itemPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel itemPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel label = new JLabel(labelText);
         label.setFont(new Font("Arial", Font.PLAIN, 16));
         JLabel value = new JLabel(valueText);
@@ -818,18 +836,18 @@ completeBookingButton.addActionListener(new ActionListener() {
         itemPanel.add(value);
         panel.add(itemPanel);
     }
-     private void addLabelAndEditableField(JPanel panel, GridBagConstraints gbc, String labelText, JTextField field, int gridy) {
+    private void addLabelAndEditableField(JPanel panel, GridBagConstraints gbc, String labelText, JTextField field, int gridy) {
         JLabel label = new JLabel(labelText);
         label.setFont(new Font("Arial", Font.PLAIN, 16));
         
         
-        JPanel labelFieldPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel labelFieldPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         labelFieldPanel.add(label);
         labelFieldPanel.add(field);
     
         gbc.gridy = gridy;
         panel.add(labelFieldPanel, gbc);
-}
+    }
     
 
     public static void main(String[] args) {
