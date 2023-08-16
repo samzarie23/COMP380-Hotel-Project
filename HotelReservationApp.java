@@ -758,11 +758,6 @@ bookNowButton.addActionListener(new ActionListener() {
                 + "logLevel=4;"
                 + "loginTimeout=30;";
 
-                try (Connection connection = DriverManager.getConnection(connectionUrl)) 
-            {
-                System.out.println("Connected to the database");
-            
-
             try (Connection connection = DriverManager.getConnection(connectionUrl)) 
         {
             System.out.println("Connected to the database");
@@ -795,7 +790,8 @@ bookNowButton.addActionListener(new ActionListener() {
 
                 }
             
-                // Your booking logic here
+              }  
+              // Your booking logic here
             
             } 
             catch (SQLException ex) 
@@ -861,5 +857,6 @@ bookNowButton.addActionListener(new ActionListener() {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new HotelReservationApp());
     }
-}
+}   
+    
 
