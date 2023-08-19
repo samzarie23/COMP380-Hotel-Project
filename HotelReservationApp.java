@@ -56,7 +56,15 @@ String connectionUrl = "jdbc:sqlserver://hotelsjas.database.windows.net:1433;"
         }
         */
 
-
+/**
+ * @author Sam, Alek, Jayms, Sheng
+ * @version 2.0
+ * When executed, this class starts up the software for the hotel reservation site and allows the user to enter in
+ * check-in and check-out dates and to search for rooms. User can then  confirm booking once a room is selected.
+ * For the input values, the only values are what the user enters, like the check-in date, check-out date,
+ * and when confirming the booking, the user's name, CCV, credit card number, email address, phone number, and cardholder name.
+ * For output values, the client would receive a confirmation number for their booking.
+ */
 public class HotelReservationApp {
     private JFrame frame;
     private JFrame bookingFormFrame;
@@ -66,11 +74,16 @@ public class HotelReservationApp {
     private JTextField confirmationField; // New field to enter confirmation number
     private JPanel summaryPanel;
     private JFrame contactPaymentFrame;
-
+     /**
+     * Constructor that calls createAndShowGUI()
+     * 
+     */
     public HotelReservationApp() {
         createAndShowGUI();
     }
-
+    /**
+     * Creates the home page of the UI.
+     */
     private void createAndShowGUI() {
         frame = new JFrame("Hotel Reservation Application");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,6 +97,10 @@ public class HotelReservationApp {
         // Outer Panel with Background Image
         JPanel outerPanel = new JPanel(new BorderLayout()) {
             @Override
+            /**
+             * Puts a background image on the home page
+             * @param g Used to create images
+             */
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 ImageIcon backgroundImage = new ImageIcon("C:/Users/jayms/OneDrive/COMP 380 Work/COMP380-Hotel-Project-main/images/HawaiiPhoto.jpg");
@@ -207,6 +224,10 @@ public class HotelReservationApp {
         // Add action listeners to the buttons
         bookNowButton.addActionListener(new ActionListener() {
             @Override
+             /**
+             * Allows text entry into check-in and check-out text boxes as well as the number of travelers
+             * @param e
+             */
             public void actionPerformed(ActionEvent e) {
                 // Call the bookNow method with the input data
                 String checkIn = checkInField.getText();
@@ -227,6 +248,10 @@ public class HotelReservationApp {
 
         viewReservationButton.addActionListener(new ActionListener() {
             @Override
+            /**
+             * Method to look at reservation with confirmation number
+             * @param e
+             */
             public void actionPerformed(ActionEvent e) {
                 // Call the method to view the reservation with the confirmation number
                 String confirmationNumber = confirmationField.getText();
@@ -245,7 +270,13 @@ public class HotelReservationApp {
         frame.pack();
         frame.setVisible(true);
     }
-
+    /** 
+     * Method to validate the booking information
+     * @param checkIn
+     * @param checkOut
+     * @param howMany
+     * @return boolean
+     */
     private boolean bookNow(String checkIn, String checkOut, int howMany) {
         // Check if the date format is valid (month/day/year)
         if (!isValidDateFormat(checkIn) || !isValidDateFormat(checkOut)) {
@@ -262,25 +293,43 @@ public class HotelReservationApp {
         return true;
     }
     
-    // Helper method to check if a date is in valid format (month/day/year)
+    
+     /** 
+     * Method to make sure date is in valid form
+     * @param date
+     * @return boolean
+     */
     private boolean isValidDateFormat(String date) {
         String dateFormatRegex = "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\\d{4}$";
         return date.matches(dateFormatRegex);
     }
 
-    
+     /**
+     * Helper method to display an error message if the date is invalid
+     * @param message
+     * @return boolean
+     */
     private void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
     
     // Method to handle viewing an existing reservation
+     /**
+     * Method to handle viewing an existing reservation
+     * @param confirmationNumber The confirmation number of the reservation
+     */
     private void viewReservation(String confirmationNumber) {
         // Implement this method to handle viewing the reservation based on the confirmation number
         // You can use the provided JDBC code from previous responses to interact with the database.
         // Retrieve the reservation details from the database and display them to the user.
 
     }
-
+     /**
+     * This method brings up a window to allow guests to book a room
+     * A new window pops up and displays all the available rooms for the specific number of guests
+     * @param checkin the check-in date
+     * @param checkout the check-out date
+     */
     private void createAndShowBookingFormGUI(String checkin, String checkout) {
         bookingFormFrame = new JFrame("Available Rooms");
         bookingFormFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -364,7 +413,13 @@ bookingFormFrame.add(titlePanel, BorderLayout.NORTH);
         bookingFormFrame.setVisible(true);
     }
     
-
+     /**
+     * The method generates the right side of the window which contains all the rooms available 
+     * @param roomsPanel object to allow separation between different rooms
+     * @param numPeople the number of people
+     * @param checkin the check-in date
+     * @param checkout the check-out date
+     */
     private void createRoomCards(JPanel roomsPanel, int numPeople, String checkin, String checkout) {
         int roomNumberBase = (numPeople * 100);
 
@@ -378,7 +433,15 @@ bookingFormFrame.add(titlePanel, BorderLayout.NORTH);
         }
     }
     
-    
+    /**
+     * The method generates the available rooms and displays the room number, and maximum occupancy of the room.
+     * @param roomNumber the room number
+     * @param numPeople the number of people 
+     * @param roomNumberOfficial the official room number
+     * @param checkin the check-in date
+     * @param checkout the check-out date
+     * @return JPanel a page with the different rooms
+     */
     private JPanel createRoomCard(int roomNumber, int numPeople, int roomNumberOfficial, String checkin, String checkout) {
         JPanel roomCard = new JPanel();
         roomCard.setLayout(new BorderLayout()); // Use BorderLayout for overall layout
@@ -487,6 +550,9 @@ featuresLabel.setForeground(textColor);
  JButton bookNowButton = new JButton("Book Now");
 bookNowButton.addActionListener(new ActionListener() {
     @Override
+     /**
+     * Method to handle booking the room
+     */
     public void actionPerformed(ActionEvent e) {
         // Implement the booking logic for the selected room
         String roomInfo = "Room " + roomNumber + "\nView: " + viewLabel.getText() +
@@ -497,9 +563,6 @@ bookNowButton.addActionListener(new ActionListener() {
         boolean isRoomBooked = bookRoom(roomInfo); // Implement this method
         if (isRoomBooked) 
         {
-            
-
-
                     // Get the selected check-in and check-out dates, number of travelers, and room number
                     String checkInDate = checkin;
                     String checkOutDate = checkout;
@@ -537,7 +600,16 @@ bookNowButton.addActionListener(new ActionListener() {
         return roomCard;
     }
     
-
+     /**
+     * Method to add a label and editable text field to a panel
+     * @param panel panel Passes in the panel
+     * @param component Passes in the component
+     * @param gridx Passes in the gridx
+     * @param gridy Passes in the gridy
+     * @param gridwidth Passes in the gridwidth
+     * @param gridheight Passes in the gridheight
+     * @param anchor Passes in the anchor
+     */
     private void addComponent(JPanel panel, JComponent component, int gridx, int gridy,
                             int gridwidth, int gridheight, int anchor) {
         GridBagConstraints gbc = new GridBagConstraints();
@@ -549,14 +621,20 @@ bookNowButton.addActionListener(new ActionListener() {
         gbc.insets = new Insets(5, 5, 5, 5);
         panel.add(component, gbc);
     }   
-    
+    /**
+     * Method to get random views
+     * @return String returns the random views
+     */
    private String getRandomView() {
         String[] views = {"Ocean View", "Mountain View", "City View", "Garden View"};
         int randomIndex = (int) (Math.random() * views.length);
         return views[randomIndex];
     }
 
-    // Helper method to generate random features
+    /**
+    * // Helper method to generate random features
+    * @return String returns the random features
+    */
     private String getRandomFeatures() {
         String[] features = {"Balcony", "Mini Bar", "Jacuzzi", "Kitchenette"};
         int numFeatures = (int) (Math.random() * (features.length - 1)) + 1;
@@ -572,14 +650,20 @@ bookNowButton.addActionListener(new ActionListener() {
 
         return selectedFeatures.toString();
     }
-
+    /**
+    * Method to create and show the original GUI
+    */
     private void showOriginalGUI() {
         bookingFormFrame.dispose(); // Close the booking form GUI
         frame.setVisible(true);     // Show the original GUI
     }
 
 
-    
+     /**
+     * Method to get the beds label
+     * @param numPeople Passes in the number of people from that was gathered earlier from the user
+     * @return String returns the beds label
+     */
     private String getBedsLabel(int numPeople) {
         // Determine and return the beds label based on the number of people
         if (numPeople == 1) {
@@ -592,7 +676,11 @@ bookNowButton.addActionListener(new ActionListener() {
             return "Beds: 4 (Villa)";
         }
     }
-    
+     /**
+     * Method to get the bathrooms label
+     * @param numPeople Passes in the number of people from that was gathered earlier from the user
+     * @return String returns the bathrooms label
+     */
     private String getBathroomsLabel(int numPeople) {
         // Determine and return the bathrooms label based on the number of people
         if (numPeople == 1) {
@@ -605,13 +693,25 @@ bookNowButton.addActionListener(new ActionListener() {
             return "Bathrooms: 3 (Villa)";
         }
     }
-
+     /**
+     * Method to add a label and editable text field to a panel
+     * @param roomInfo roomInfo Passes in the room information from that was gathered earlier from the user
+     * @return boolean returns true if the room is booked, false otherwise
+     */
     private boolean bookRoom(String roomInfo) {
         // Implement your booking logic here
         // You can use JDBC code to insert the reservation into the database
         // Return true if booking is successful, false otherwise
         return true; // Placeholder, update as needed
     }
+     /**
+     * Method to add a label and editable text field to a panel for the contact/payment information
+     * @param checkInDate Passes in  the check in date from that was gathered earlier from the 
+     * @param checkOutDate Passes in the check out date from that was gathered earlier from 
+     * @param numTravelers Passes in the number of travelers from that was gathered earlier from the user
+     * @param roomNumber Passes in the room number from that was gathered earlier from the 
+     * @param priceLabel Passes in the price label from that was gathered earlier from the user
+     */
     private void createAndShowContactPaymentGUI(String checkInDate, String checkOutDate, int numTravelers, int roomNumber, String priceLabel) {
         // Create the JFrame
         JFrame contactPaymentFrame = new JFrame("Contact and Payment Information");
@@ -814,7 +914,14 @@ bookNowButton.addActionListener(new ActionListener() {
     
     
     
-    
+     /**
+     * Helper method to add a label and field to a panel for the total breakdown
+     * @param panel object to add the label and field to
+     * @param gbc GridBagConstraints object
+     * @param labelText text for the label
+     * @param fieldValue text for the field
+     * @param gridY gridy value for the GridBagConstraints object
+     */
     private void addLabelAndField(JPanel panel, GridBagConstraints gbc, String labelText, String fieldValue, int gridY) {
         JLabel label = new JLabel(labelText);
         label.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -829,7 +936,12 @@ bookNowButton.addActionListener(new ActionListener() {
         panel.add(labelFieldPanel, gbc);
     }
     
-    
+     /**
+     * Helper method to add a total breakdown item to a panel
+     * @param panel object to add the item to
+     * @param labelText text for the label
+     * @param valueText text for the value
+     */
     private void addTotalBreakdownItem(JPanel panel, String labelText, String valueText) {
         JPanel itemPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel label = new JLabel(labelText);
@@ -840,6 +952,14 @@ bookNowButton.addActionListener(new ActionListener() {
         itemPanel.add(value);
         panel.add(itemPanel);
     }
+     /**
+     * Helper method to add a label and editable field to a panel 
+     * @param panel object to add the label and field to
+     * @param gbc GridNagConstraints object
+     * @param labelText labelText text for the label
+     * @param field JTextField object
+     * @param gridy gridy value for the GridBagConstraints object
+     */
     private void addLabelAndEditableField(JPanel panel, GridBagConstraints gbc, String labelText, JTextField field, int gridy) {
         JLabel label = new JLabel(labelText);
         label.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -853,10 +973,12 @@ bookNowButton.addActionListener(new ActionListener() {
         panel.add(labelFieldPanel, gbc);
     }
     
-
+     /**
+      * Main method to create the GUI
+      * @param args argument
+      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new HotelReservationApp());
     }
 }   
     
-
